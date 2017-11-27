@@ -1,0 +1,14 @@
+.input-group {
+  position: relative;
+}
+
+.input-group input {
+  padding-right: 30px;
+}
+
+.input-group i {
+  position: absolute;
+  right: 0px;
+  padding: 10px 12px;
+  pointer-events: none;
+}

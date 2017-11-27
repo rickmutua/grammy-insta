@@ -1,0 +1,76 @@
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    {% block styles %}
+
+        {% bootstrap_css %}
+
+        <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+
+            <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    {% endblock %}
+
+
+</head>
+<body>
+
+
+    <nav class="navbar navbar-inverse" style="background-color: white">
+
+        <div class="container">
+
+            <div class="navbar-header">
+
+                <a href="{% url 'index' %}" class="navbar-brand" style="color: black"> <i class="fa fa-instagram"></i> </a>
+
+                <a href="{% url 'index'%}" class="navbar-brand"> Grammy Insta </a>
+
+            </div>
+
+
+                <!-- search form -->
+            <div class="col-sm-4 col-md-4 navbar-center">
+
+                <form action="" class="navbar-form" role="search">
+
+                    <div class="input-group">
+
+                        <input type="text" class="form-control" placeholder="Search" name="user" <i class="glyphicon glyphicon-search"></i>>
+
+
+                        <i class="glyphicon glyphicon-search"></i>
+
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <div class="col-sm-4 col-md-6 navbar-right" style="padding-right: 50px;">
+
+                <span  style="height: 50px;" class="glyphicon glyphicon-compass"></span>
+
+                <span style="height: 50px; font-size: 30px; padding-right: 50px;" class="glyphicon glyphicon-heart-empty"></span>
+
+                <span style="height: 30px; font-size: 30px;" class="glyphicon glyphicon-user"></span>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+</body>
+</html>
