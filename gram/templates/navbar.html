@@ -12,9 +12,11 @@
 
         {% bootstrap_css %}
 
-        <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+            <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
 
             <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
     {% endblock %}
 
@@ -29,21 +31,21 @@
 
             <div class="navbar-header">
 
-                <a href="{% url 'index' %}" class="navbar-brand" style="color: black"> <i class="fa fa-instagram"></i> </a>
+                <a href="{% url 'index' %}" class="navbar-brand" style="color: black; height: 30px; font-size: 30px;"> <i class="fa fa-instagram"></i> </a>
 
-                <a href="{% url 'index'%}" class="navbar-brand"> Grammy Insta </a>
+                <a href="{% url 'index'%}" class="navbar-brand" style="height: 30px;"> Grammy Insta </a>
 
             </div>
 
 
                 <!-- search form -->
-            <div class="col-sm-4 col-md-4 navbar-center">
+            <div class="col-sm-4 col-md-4 navbar-center" style="">
 
                 <form action="" class="navbar-form" role="search">
 
                     <div class="input-group">
 
-                        <input type="text" class="form-control" placeholder="Search" name="user" <i class="glyphicon glyphicon-search"></i>>
+                        <input type="text" class="form-control" placeholder="Search" name="user">
 
 
                         <i class="glyphicon glyphicon-search"></i>
