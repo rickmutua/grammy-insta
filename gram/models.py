@@ -38,9 +38,9 @@ class Post(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    caption = models.CharField(max_length=250)
-
     image = models.ImageField(upload_to='post/', blank=True)
+
+    caption = models.CharField(max_length=250)
 
     post_date = models.DateTimeField(auto_now_add=True)
 
