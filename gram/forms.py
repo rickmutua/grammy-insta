@@ -1,4 +1,4 @@
-from .models import Profile
+from .models import Profile, Post
 from django.contrib.auth.models import User
 from django import forms
 
@@ -19,3 +19,12 @@ class ProfileForm(forms.ModelForm):
         model = Profile
 
         fields = ('bio', 'gender')
+
+
+class PostForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Post
+
+        fields = ('image', 'caption')
