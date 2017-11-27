@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+{% load bootstrap3 %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    {% if title %}
+
+        {{title}}
+
+    {% else %}
+
+        <title> Grammy Insta </title>
+
+    {% endif %}
+</head>
+<body>
+
+    {% block content %}
+
+        {{ block.super }}
+
+            <div class="container">
+
+                <h1> Haroo </h1>
+
+                <div class="col-sm-4 col-md-6 navbar-right">
+
+                <span class="glyphicon glyphicon-compass"> </span>
+
+                <span class="glyphicon glyphicon-heart-empty"></span>
+
+                <i class="glyphicon glyphicon-user"></i>
+
+                    <span class="fa fa-instagram"></span>
+
+            </div>
+
+            </div>
+
+    {% endblock %}
+
+</body>
+</html>
