@@ -4,7 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import transaction
 
-from .forms import UserForm, ProfileForm
+from .forms import UserForm, ProfileForm, PostForm
+from .models import Post
+
+from django.core.urlresolvers import reverse
 
 # Create your views here.
 
@@ -32,7 +35,7 @@ def update_profile(request, user_id):
             user_form.save()
             profile_form.save()
 
-            return redirect(request, 'profiles/profile.html', {'user': user})
+            return redirect(reverse('user', kwargs={'username': request.user.username}))
 
     else:
 
@@ -45,3 +48,26 @@ def update_profile(request, user_id):
         'profile_form': profile_form,
         'user': user
     })
+
+
+def upload_post(request):
+
+    if request.method == 'POST':
+
+        form = PostForm(request.POST, files=request.FILES)
+
+        if form.is_valid():
+
+            single_post = Post(user=request.user, image=request.FILES['image'], caption=request.POST['caption'])
+
+            single_post.save()
+
+            return redirect(reverse('user', kwargs={'username': request.user.username}))
+
+    else:
+
+        form = PostForm()
+
+        return render(request, 'base/upload-photo.html', {'form': form})
+
+
