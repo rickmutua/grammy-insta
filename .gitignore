@@ -3,4 +3,5 @@ virtual/
 *.pyc
 .idea/
 db.sqlite3
-
+categories.json
+confusables.json
