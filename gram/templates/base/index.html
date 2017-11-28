@@ -25,21 +25,25 @@
 
             <div class="container">
 
-                <h1> Haroo </h1>
+                <div class="col-md-2"></div>
 
-                <div class="col-sm-4 col-md-6 navbar-right">
+                <div class="col-md-8">
 
-                <span class="glyphicon glyphicon-compass"> </span>
+                    {% for post in posts %}
 
-                <span class="glyphicon glyphicon-heart-empty"></span>
+                        <h2> <a href="{% url 'profile' post.user.username %}"> {{ post.user.username }} </a> </h2>
 
-                <i class="glyphicon glyphicon-user"></i>
+                        <img src="{{ post.image.url }}" class="img-responsive" alt="post">
 
-                    <span class="fa fa-instagram"></span>
+                    {% empty %}
 
-            </div>
+                        <h1> There Are No Posts </h1>
 
-                <a href="{% url 'upload-photo' %}"> Upload </a>
+                    {% endfor %}
+
+                </div>
+
+                <div class="col-md-2"></div>
 
             </div>
 
