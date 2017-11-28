@@ -1,0 +1,84 @@
+{% extends 'base/base.html' %}
+{% load bootstrap3 %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    {% block styles %}
+
+        {% bootstrap_css %}
+
+            <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+
+    {% endblock %}
+</head>
+<body>
+
+
+    {% block content %}
+
+        {{ block.super }}
+
+            <div class="container">
+
+                {% for n in profpic %}
+
+                    <div class="row" style="margin-top: 20px;">
+
+                        <div class="col-md-2"></div>
+
+                        <div class="col-md-8">
+
+                            <div class="col-md-3">
+
+                                <img src="{{ n.profpic.url }}" class="img-responsive" alt="Image" id="profpic" />
+
+                            </div>
+
+                            <div class="col-md-5" style="margin: 5%;">
+
+                                <p> {{ user.username }} <a href="{% url 'update-profile' user.username %}"> update </a> </p>
+
+                                <p> {{ post.count }} Posts  {{ followers.count }} Followers  {{ following.count }} Following </p>
+
+                                <p> {{ user.profile.bio }} </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-2"></div>
+
+                    </div>
+
+
+                {% endfor %}
+
+                <br>
+
+
+                <h2 class="text-center"> Posts </h2>
+
+                {% for post in posts %}
+
+                    <div class="col-md-4">
+
+                        <img src="{{ post.image.url }}" class="img-responsive" alt="post" />
+
+                    </div>
+
+                {% endfor %}
+
+
+            </div>
+
+    {% endblock %}
+
+</body>
+</html>
