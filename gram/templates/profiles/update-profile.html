@@ -22,9 +22,13 @@
 
                     {% csrf_token %}
 
-                    {{ user_form.as_p }}
+                    <div class="form-group">
 
-                    {{ profile_form.as_p }}
+                        {{ user_form.as_p }}
+
+                        {{ profile_form.as_p }}
+
+                    </div>
 
                     <button type="submit">Save changes</button>
 

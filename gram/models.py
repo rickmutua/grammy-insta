@@ -36,11 +36,13 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Post(models.Model):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 
-    image = models.ImageField(upload_to='post/', blank=True)
+    profile = models.OneToOneField('Profile', on_delete=models.CASCADE, null=True)
 
-    caption = models.CharField(max_length=250)
+    image = models.ImageField(upload_to='post/', blank=True, default=False)
+
+    caption = models.CharField(max_length=250, blank=True)
 
     post_date = models.DateTimeField(auto_now_add=True)
 

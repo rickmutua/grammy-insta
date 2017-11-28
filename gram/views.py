@@ -1,13 +1,17 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import logout
 
 from django.contrib.auth.models import User
 from django.db import transaction
 
 from .forms import UserForm, ProfileForm, PostForm
-from .models import Post
+from .models import Post, Profile
 
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
+
+from django.http import Http404
 
 # Create your views here.
 
@@ -21,28 +25,28 @@ def index(request):
 
 
 @transaction.atomic
-def update_profile(request, user_id):
+def update_profile(request, username):
 
-    user = User.objects.get(pk=user_id)
+    user = User.objects.get(username = username)
 
     if request.method == 'POST':
 
         user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        profile_form = ProfileForm(request.POST, instance=request.user.profile, files=request.FILES)
 
         if user_form.is_valid() and profile_form.is_valid():
 
             user_form.save()
             profile_form.save()
 
-            return redirect(reverse('user', kwargs={'username': request.user.username}))
+            return redirect(reverse('profile', kwargs={'username': request.user.username}))
 
     else:
 
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.profile)
 
-    return render(request, 'profiles/profile.html', {
+    return render(request, 'profiles/update-profile.html', {
 
         'user_form': user_form,
         'profile_form': profile_form,
@@ -50,7 +54,7 @@ def update_profile(request, user_id):
     })
 
 
-def upload_post(request):
+def upload_photo(request):
 
     if request.method == 'POST':
 
@@ -58,16 +62,32 @@ def upload_post(request):
 
         if form.is_valid():
 
-            single_post = Post(user=request.user, image=request.FILES['image'], caption=request.POST['caption'])
+            single_post = Post(profile=request.user.profile, image=request.FILES['image'],
+                               caption=request.POST['caption'])
 
             single_post.save()
 
-            return redirect(reverse('user', kwargs={'username': request.user.username}))
+            return redirect(reverse('upload-photo', kwargs={'username': request.user.username}))
 
     else:
 
         form = PostForm()
 
         return render(request, 'base/upload-photo.html', {'form': form})
+
+
+def profile(request, username):
+
+    try:
+        user = User.objects.get(username=username)
+
+        profpic = Profile.objects.filter(user_id=user).all().order_by('-id')
+
+        posts = Post.objects.filter(user_id=user).all().order_by('-id')
+
+    except ObjectDoesNotExist:
+        raise Http404()
+
+    return render(request, 'profiles/profile.html', {'user': user, 'posts': posts, 'profpic': profpic})
 
 
