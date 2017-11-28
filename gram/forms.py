@@ -28,3 +28,12 @@ class PostForm(forms.ModelForm):
         model = Post
 
         fields = ('image', 'caption')
+
+
+class ProfPicForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Profile
+
+        field = ('profpic')

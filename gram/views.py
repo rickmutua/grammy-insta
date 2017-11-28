@@ -5,7 +5,7 @@ from django.contrib.auth.views import logout
 from django.contrib.auth.models import User
 from django.db import transaction
 
-from .forms import UserForm, ProfileForm, PostForm
+from .forms import UserForm, ProfileForm, PostForm, ProfPicForm
 from .models import Post, Profile
 
 from django.core.urlresolvers import reverse
@@ -21,7 +21,9 @@ def index(request):
 
     title = 'Grammy Insta'
 
-    return render(request, 'base/index.html', {'title': title })
+    posts = Post.objects.filter().all().order_by('-id')
+
+    return render(request, 'base/index.html', {'title': title, 'posts': posts })
 
 
 @transaction.atomic
@@ -91,3 +93,24 @@ def profile(request, username):
     return render(request, 'profiles/profile.html', {'user': user, 'posts': posts, 'profpic': profpic})
 
 
+def update_profpic(request, username):
+
+        user = User.objects.get(username=username)
+
+        if request.method == 'POST':
+
+            form = ProfPicForm(request.POST, files=request.FILES)
+
+            if form.is_valid():
+
+                profile_picture = Profile(profile=request.user.profile, profpic=request.FILES['profpic'])
+
+                profile_picture.save()
+
+                return redirect(reverse('profile', kwargs={'username': request.user.username}))
+
+        else:
+
+            form = ProfPicForm()
+
+            return render(request, 'profiles/change-profpic.html', {'form': form})
