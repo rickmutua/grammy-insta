@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load bootstrap3 %}
+{% load comments %}
 
 
 <!DOCTYPE html>
@@ -31,9 +32,9 @@
 
                     {% for post in posts %}
 
-                        <h2> <a href="{% url 'profile' post.user.username %}"> {{ post.user.username }} </a> </h2>
+                        <h2>  {{ user.username }} </h2>
 
-                        <img src="{{ post.image.url }}" class="img-responsive" alt="post">
+                        <a href="{% url 'post' post.id %}"> <img src="{{ post.image.url }}" class="img-responsive" alt="post"> </a>
 
                     {% empty %}
 

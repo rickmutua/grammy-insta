@@ -10,7 +10,7 @@ class Profile (models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    profpic = models.ImageField(upload_to='profpic/', blank=True)
+    profpic = models.ImageField(upload_to='profpic/', blank=True, default=False)
 
     bio = models.TextField(max_length=500, blank=True)
 

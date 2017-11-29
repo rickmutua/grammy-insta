@@ -42,7 +42,12 @@
 
                             <div class="col-md-5" style="margin: 5%;">
 
-                                <p> {{ user.username }} <a href="{% url 'update-profile' user.username %}"> update </a> </p>
+                                <p> {{ user.username }}
+
+                                    <a href="{% url 'update-profile' user.username %}"> Update Profile </a>
+                                    <br>
+                                    <a href="{% url 'update-profpic' user.username %}"> Update Profile Picture </a>
+                                </p>
 
                                 <p> {{ post.count }} Posts  {{ followers.count }} Followers  {{ following.count }} Following </p>
 

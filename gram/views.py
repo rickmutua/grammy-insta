@@ -93,9 +93,7 @@ def profile(request, username):
     return render(request, 'profiles/profile.html', {'user': user, 'posts': posts, 'profpic': profpic})
 
 
-def update_profpic(request, username):
-
-        user = User.objects.get(username=username)
+def update_profile_pic(request, username):
 
         if request.method == 'POST':
 
@@ -103,9 +101,7 @@ def update_profpic(request, username):
 
             if form.is_valid():
 
-                profile_picture = Profile(profile=request.user.profile, profpic=request.FILES['profpic'])
-
-                profile_picture.save()
+                form.save()
 
                 return redirect(reverse('profile', kwargs={'username': request.user.username}))
 
@@ -114,3 +110,16 @@ def update_profpic(request, username):
             form = ProfPicForm()
 
             return render(request, 'profiles/change-profpic.html', {'form': form})
+
+
+def post(request, post_id):
+
+    try:
+
+        post = Post.objects.get(id=post_id)
+
+    except ObjectDoesNotExist:
+
+        raise Http404
+
+    return render(request, 'base/post.html', {'post': post})

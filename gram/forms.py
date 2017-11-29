@@ -36,4 +36,4 @@ class ProfPicForm(forms.ModelForm):
 
         model = Profile
 
-        field = ('profpic')
+        fields = ('profpic',)
