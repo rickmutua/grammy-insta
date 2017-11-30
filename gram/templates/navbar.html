@@ -41,11 +41,11 @@
                 <!-- search form -->
             <div class="col-sm-4 col-md-4 navbar-center" style="">
 
-                <form action="" class="navbar-form" role="search">
+                <form action="{% url 'search_results' %}" class="navbar-form" role="search">
 
                     <div class="input-group">
 
-                        <input type="text" class="form-control" placeholder="Search" name="user">
+                        <input type="text" class="form-control" placeholder="Search" name="username">
 
 
                         <i class="glyphicon glyphicon-search"></i>
@@ -58,13 +58,20 @@
             </div>
 
 
-            <div class="col-sm-4 col-md-6 navbar-right" style="padding-right: 50px;">
+            <div class="navbar-right" style="padding-right: 50px;">
 
                 <span  style="height: 50px;" class="glyphicon glyphicon-compass"></span>
 
+                <a href="{% url 'upload-photo' user.username %}">
+                    <span style="height: 30px; font-size: 30px; padding-right: 50px;" class="glyphicon glyphicon-upload"></span>
+                </a>
+
                 <span style="height: 50px; font-size: 30px; padding-right: 50px;" class="glyphicon glyphicon-heart-empty"></span>
 
-                <a href="{% url 'profile' user.username %}"> <span style="height: 30px; font-size: 30px;" class="glyphicon glyphicon-user"></span> </a>
+                <a href="{% url 'profile' user.username %}">
+                    <span style="height: 30px; font-size: 30px;" class="glyphicon glyphicon-user"></span>
+                </a>
+
 
             </div>
 

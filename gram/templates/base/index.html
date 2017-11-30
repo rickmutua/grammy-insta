@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load bootstrap3 %}
+{% load static %}
 {% load comments %}
 
 
@@ -17,6 +18,14 @@
         <title> Grammy Insta </title>
 
     {% endif %}
+
+    {% block styles %}
+
+        {% bootstrap_css %}
+
+            <link rel="stylesheet" href="{% static 'css/index.css' %}">
+
+    {% endblock %}
 </head>
 <body>
 
@@ -32,7 +41,18 @@
 
                     {% for post in posts %}
 
-                        <h2>  {{ user.username }} </h2>
+                        <h2>  {% if post.profile.profpic %}
+
+                                     <a href="{% url 'profile' post.user.username %}"> <img src="{{ post.profile.profpic.url }}" id="profpic"> </a>
+
+                                {% else %}
+
+                                    <p> no image </p>
+
+                                {% endif %}
+
+                                    <a href="{% url 'profile' post.user.username %}"> {{ post.user.username }} </a>
+                        </h2>
 
                         <a href="{% url 'post' post.id %}"> <img src="{{ post.image.url }}" class="img-responsive" alt="post"> </a>
 
