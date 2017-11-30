@@ -56,7 +56,9 @@ def update_profile(request, username):
     })
 
 
-def upload_photo(request):
+def upload_photo(request, username):
+
+    user = User.objects.get(username=username)
 
     if request.method == 'POST':
 
@@ -64,12 +66,11 @@ def upload_photo(request):
 
         if form.is_valid():
 
-            single_post = Post(profile=request.user.profile, image=request.FILES['image'],
-                               caption=request.POST['caption'])
-
+            single_post = form.save(commit=False)
+            single_post.user = user
             single_post.save()
 
-            return redirect(reverse('upload-photo', kwargs={'username': request.user.username}))
+            return redirect(reverse('index', kwargs={'username': request.user.username}))
 
     else:
 
@@ -93,23 +94,28 @@ def profile(request, username):
     return render(request, 'profiles/profile.html', {'user': user, 'posts': posts, 'profpic': profpic})
 
 
+@transaction.atomic
 def update_profile_pic(request, username):
 
-        if request.method == 'POST':
+    user = User.objects.get(username=username)
 
-            form = ProfPicForm(request.POST, files=request.FILES)
+    if request.method == 'POST':
 
-            if form.is_valid():
+        form = ProfPicForm(request.POST, files=request.FILES)
 
-                form.save()
+        if form.is_valid():
 
-                return redirect(reverse('profile', kwargs={'username': request.user.username}))
+            profile_picture = form.save(commit=False)
+            profile_picture.user = user
+            profile_picture.save()
 
-        else:
+            return redirect(reverse('profile', kwargs={'username': request.user.username}))
 
-            form = ProfPicForm()
+    else:
 
-            return render(request, 'profiles/change-profpic.html', {'form': form})
+        form = ProfPicForm()
+
+        return render(request, 'profiles/change-profpic.html', {'form': form})
 
 
 def post(request, post_id):
@@ -123,3 +129,20 @@ def post(request, post_id):
         raise Http404
 
     return render(request, 'base/post.html', {'post': post})
+
+
+def search_results(request, username):
+
+    user = User.objects.get(username=username)
+
+    if 'user' in request.GET and request.GET['user']:
+        search_term = request.GET.get('user')
+        searched_users = Profile.search_by_username(search_term)
+
+        users = Profile.objects.filter(users= searched_users).all()
+
+        return render(request, 'base/search-results.html', {"users": searched_users, 'users': users})
+
+    else:
+        message = "You haven't searched for any term"
+        return render(request, 'base/search-results.html', {"message": message, 'user': user})

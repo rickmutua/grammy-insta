@@ -20,6 +20,12 @@ class Profile (models.Model):
 
         return self.user.username
 
+    @classmethod
+    def search_by_username(cls, search_term):
+        users = cls.objects.filter(name__icontains=search_term)
+
+        return users
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -36,7 +42,7 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Post(models.Model):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     profile = models.OneToOneField('Profile', on_delete=models.CASCADE, null=True)
 
