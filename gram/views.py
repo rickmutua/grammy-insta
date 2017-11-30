@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 
 from .forms import UserForm, ProfileForm, PostForm, ProfPicForm
-from .models import Post, Profile
+from .models import Post, Profile, Following
 
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
@@ -70,7 +70,7 @@ def upload_photo(request, username):
             single_post.user = user
             single_post.save()
 
-            return redirect(reverse('index', kwargs={'username': request.user.username}))
+            return redirect(reverse('index'))
 
     else:
 
@@ -146,3 +146,17 @@ def search_results(request, username):
     else:
         message = "You haven't searched for any term"
         return render(request, 'base/search-results.html', {"message": message, 'user': user})
+
+
+def following(request, username):
+
+    current_user = request.user
+
+    follow = Profile.objects.get(username=username)
+
+    following = Following(user=current_user, profile=follow)
+
+    following.save()
+
+    return redirect(index)
+
