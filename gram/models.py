@@ -42,9 +42,9 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Post(models.Model):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    profile = models.OneToOneField('Profile', on_delete=models.CASCADE, null=True)
+    profile = models.ForeignKey('Profile', on_delete=models.CASCADE, null=True)
 
     image = models.ImageField(upload_to='post/', blank=True, default=False)
 
@@ -59,5 +59,21 @@ class Post(models.Model):
     class Meta:
 
         ordering = ['-post_date']
+
+
+class Following(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    profile = models.ForeignKey('Profile', on_delete=models.CASCADE, null=True)
+
+
+    @classmethod
+    def get_following(cls, user_id):
+
+        following = Following.objects.filter(user=user_id).all()
+
+        return following
+
 
 
