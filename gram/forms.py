@@ -1,4 +1,4 @@
-from .models import Profile, Post
+from .models import Profile, Post, Comment
 from django.contrib.auth.models import User
 from django import forms
 
@@ -37,3 +37,12 @@ class ProfPicForm(forms.ModelForm):
         model = Profile
 
         fields = ('profpic',)
+
+
+class CommentForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Comment
+
+        fields = ('content',)
