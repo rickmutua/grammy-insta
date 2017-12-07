@@ -44,9 +44,17 @@
 
                                 <p> @{{ user.username }}
 
+                                    {% if profile.request.user %}
+
                                     <a href="{% url 'update-profile' user.username %}"> Update Profile </a>
                                     <br>
                                     <a href="{% url 'update-profpic' user.username %}"> Update Profile Picture </a>
+
+                                    {% else %}
+
+                                    <p> Following </p>
+
+                                    {% endif %}
                                 </p>
 
                                 <p> {{ post.count }} Posts  {{ followers.count }} Followers  {{ following.count }} Following </p>

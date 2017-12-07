@@ -47,14 +47,14 @@
 
                                 {% else %}
 
-                                    <p> no image </p>
+                                    <img src="" class="img-responsive" alt="profile"/>
 
                                 {% endif %}
 
                                     <a href="{% url 'profile' post.user.username %}"> {{ post.user.username }} </a>
                         </h2>
 
-                        <a href="{% url 'post' post.id %}"> <img src="{{ post.image.url }}" class="img-responsive" alt="post"> </a>
+                        <a href="{% url 'post' post.id %}"> <img src="{{ post.image.url }}" class="img-responsive" alt="post" id="image"> </a>
 
                     {% empty %}
 

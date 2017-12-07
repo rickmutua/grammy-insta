@@ -60,16 +60,20 @@
 
             <div class="navbar-right" style="padding-right: 50px;">
 
-                <span  style="height: 50px;" class="glyphicon glyphicon-compass"></span>
-
                 <a href="{% url 'upload-photo' user.username %}">
-                    <span style="height: 30px; font-size: 30px; padding-right: 50px;" class="glyphicon glyphicon-upload"></span>
+                    <span style="height: 30px; font-size: 30px; padding-right: 30px;" class="glyphicon glyphicon-upload"></span>
                 </a>
 
-                <span style="height: 50px; font-size: 30px; padding-right: 50px;" class="glyphicon glyphicon-heart-empty"></span>
+                <a href="{% url 'explore' %}">
+                    <span style="height: 50px; font-size: 30px; padding-right: 30px;" class="glyphicon glyphicon-heart-empty"></span>
+                </a>
 
-                <a href="{% url 'profile' user.username %}">
-                    <span style="height: 30px; font-size: 30px;" class="glyphicon glyphicon-user"></span>
+                <a href="{% url 'profile' request.user %}">
+                    <span style="height: 30px; font-size: 30px; padding-right: 30px;" class="glyphicon glyphicon-user"></span>
+                </a>
+
+                <a href="{% url 'logout' %}">
+                    <span style="height: 30px; font-size: 30px;" class="glyphicon glyphicon-log-out"></span>
                 </a>
 
 
