@@ -5,8 +5,8 @@ from django.contrib.auth.views import logout
 from django.contrib.auth.models import User
 from django.db import transaction
 
-from .forms import UserForm, ProfileForm, PostForm, ProfPicForm
-from .models import Post, Profile, Following
+from .forms import UserForm, ProfileForm, PostForm, ProfPicForm, CommentForm
+from .models import Post, Profile, Following, Comment
 
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
@@ -21,9 +21,11 @@ def index(request):
 
     title = 'Grammy Insta'
 
+    following = Following.get_following(request.user)
+
     posts = Post.objects.filter().all().order_by('-id')
 
-    return render(request, 'base/index.html', {'title': title, 'posts': posts })
+    return render(request, 'base/index.html', {'title': title, 'posts': posts, 'following': following})
 
 
 @transaction.atomic
@@ -118,17 +120,45 @@ def update_profile_pic(request, username):
         return render(request, 'profiles/change-profpic.html', {'form': form})
 
 
-def post(request, post_id):
+def post(request, id):
+
+    post = Post.objects.get(id=id)
+
+    profpic = Profile.objects.get(user=request.user)
+
+    reviews = Comment.objects.filter(post=id)
 
     try:
 
-        post = Post.objects.get(id=post_id)
+        if request.method == 'POST':
+
+            form = CommentForm(request.POST)
+
+            if form.is_valid():
+
+                review = form.save(commit=False)
+
+                review.user = request.user
+
+                review.save()
+
+                return redirect(post)
+
+            else:
+
+                form = CommentForm()
+
+                return render(request, 'base/post.html', {'form': form, 'post': post, 'profpic': profpic, 'reviews': reviews})
+
+        else:
+
+            form = CommentForm()
+
+            return render(request, 'base/post.html', {'form': form, 'post': post, 'profpic': profpic, 'reviews': reviews})
 
     except ObjectDoesNotExist:
 
         raise Http404
-
-    return render(request, 'base/post.html', {'post': post})
 
 
 def search_results(request, username):
@@ -148,15 +178,40 @@ def search_results(request, username):
         return render(request, 'base/search-results.html', {"message": message, 'user': user})
 
 
-def following(request, username):
+def explore(request):
 
-    current_user = request.user
+    profiles = Profile.objects.all().order_by('-id')
 
-    follow = Profile.objects.get(username=username)
+    return render(request, 'base/explore.html', {'profiles': profiles})
 
-    following = Following(user=current_user, profile=follow)
+
+def follow(request, id):
+
+    follow_user = Profile.objects.get(id = id)
+
+    following = Following(user=request.user, profile=follow_user)
 
     following.save()
 
-    return redirect(index)
+    return redirect(explore)
+
+
+# def comment(request, id):
+#
+#     single_post = Post.objects.get(id=id)
+#
+#     try:
+#
+#
+#     except ObjectDoesNotExist:
+#
+#         raise Http404()
+
+
+
+
+
+
+
+
 
