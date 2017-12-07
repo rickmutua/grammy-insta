@@ -18,6 +18,10 @@ urlpatterns = [
 
     url(r'^search/', views.search_results, name='search_results'),
 
+    url(r'^follow/(\d+)$', views.follow, name='follow'),
+
+    url(r'^explore/$', views.explore, name='explore'),
+
     url(r'^logout/$', logout, {'index': settings.LOGOUT_REDIRECT_URL}, name='logout')
 ]
 
