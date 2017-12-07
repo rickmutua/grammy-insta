@@ -44,8 +44,6 @@ class Post(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    profile = models.ForeignKey('Profile', on_delete=models.CASCADE, null=True)
-
     image = models.ImageField(upload_to='post/', blank=True, default=False)
 
     caption = models.CharField(max_length=250, blank=True)
@@ -67,13 +65,28 @@ class Following(models.Model):
 
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE, null=True)
 
-
     @classmethod
     def get_following(cls, user_id):
 
         following = Following.objects.filter(user=user_id).all()
 
         return following
+
+
+class Comment(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+    content = models.TextField(blank=True)
+
+    @classmethod
+    def get_comments(cls, post_id):
+
+        comments = Comment.objects.filter(post=post_id)
+
+        return comments
 
 
 
