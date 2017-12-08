@@ -1,6 +1,8 @@
 confusable-homoglyphs==2.0.2
+dj-database-url==0.4.2
 Django==1.11.7
 django-bootstrap3==9.1.0
+django-contrib-comments==1.8.0
 django-decouple==2.1
 django-registration==2.3
 django-vote==2.1.5
