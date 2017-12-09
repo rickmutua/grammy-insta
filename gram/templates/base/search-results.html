@@ -1,0 +1,45 @@
+{% extends 'base/base.html' %}
+{% load bootstrap3 %}
+{% load comments %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+    {% block content %}
+
+        {{ block.super }}
+
+            <div class="container">
+
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">
+
+
+
+                            <a href="{% url 'profile' user.username %}">
+
+                                <img src="{{ user.profpic.url }}" class="img-responsive" alt="Profile Pic" id="profpic" />
+
+                                {{ user.username }}
+
+                            </a>
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+    {% endblock %}
+
+</body>
+</html>
