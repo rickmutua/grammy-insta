@@ -20,6 +20,8 @@ urlpatterns = [
 
     url(r'^follow/(\d+)$', views.follow, name='follow'),
 
+    url(r'^like/(\d+)$', views.like, name='like'),
+
     url(r'^explore/$', views.explore, name='explore'),
 
     url(r'^logout/$', logout, {'index': settings.LOGOUT_REDIRECT_URL}, name='logout')

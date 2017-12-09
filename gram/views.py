@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 
 from .forms import UserForm, ProfileForm, PostForm, ProfPicForm, CommentForm
-from .models import Post, Profile, Following, Comment
+from .models import Post, Profile, Following, Comment, Like
 
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
@@ -90,10 +90,12 @@ def profile(request, username):
 
         posts = Post.objects.filter(user_id=user).all().order_by('-id')
 
+        following = Following.get_following(request.user)
+
     except ObjectDoesNotExist:
         raise Http404()
 
-    return render(request, 'profiles/profile.html', {'user': user, 'posts': posts, 'profpic': profpic})
+    return render(request, 'profiles/profile.html', {'user': user, 'posts': posts, 'profpic': profpic, 'following': following})
 
 
 @transaction.atomic
@@ -122,11 +124,13 @@ def update_profile_pic(request, username):
 
 def post(request, id):
 
-    post = Post.objects.get(id=id)
+    found_post = Post.objects.get(id=id)
 
     profpic = Profile.objects.get(user=request.user)
 
-    reviews = Comment.objects.filter(post=id)
+    reviews = Comment.objects.filter(post=found_post.id).order_by('-id')
+
+    likes = Like.objects.filter(post=found_post.id)
 
     try:
 
@@ -140,30 +144,34 @@ def post(request, id):
 
                 review.user = request.user
 
+                review.post = found_post
+
                 review.save()
 
-                return redirect(post)
+                return redirect(post, found_post.id)
 
             else:
 
                 form = CommentForm()
 
-                return render(request, 'base/post.html', {'form': form, 'post': post, 'profpic': profpic, 'reviews': reviews})
+                return render(request, 'base/post.html', {'form': form, 'post': found_post,
+                                                          'profpic': profpic, 'reviews': reviews,
+                                                          'likes': likes})
 
         else:
 
             form = CommentForm()
 
-            return render(request, 'base/post.html', {'form': form, 'post': post, 'profpic': profpic, 'reviews': reviews})
+            return render(request, 'base/post.html', {'form': form, 'post': found_post,
+                                                      'profpic': profpic, 'reviews': reviews,
+                                                      })
 
     except ObjectDoesNotExist:
 
         raise Http404
 
 
-def search_results(request, username):
-
-    user = User.objects.get(username=username)
+def search_results(request):
 
     if 'user' in request.GET and request.GET['user']:
         search_term = request.GET.get('user')
@@ -175,7 +183,7 @@ def search_results(request, username):
 
     else:
         message = "You haven't searched for any term"
-        return render(request, 'base/search-results.html', {"message": message, 'user': user})
+        return render(request, 'base/search-results.html', {"message": message})
 
 
 def explore(request):
@@ -194,6 +202,23 @@ def follow(request, id):
     following.save()
 
     return redirect(explore)
+
+
+def like(request, id):
+
+    try:
+
+        like_post = Post.objects.get(id=id)
+
+        likes = Like(user=request.user, post=like_post, likes=1)
+
+        likes.save()
+
+        return redirect(index)
+
+    except ObjectDoesNotExist:
+
+        raise Http404()
 
 
 # def comment(request, id):
