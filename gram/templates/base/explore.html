@@ -1,0 +1,90 @@
+{% extends 'base/base.html' %}
+{% load bootstrap3 %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>$Title$</title>
+
+     {% block styles %}
+
+        {% bootstrap_css %}
+
+            <link rel="stylesheet" href="{% static 'css/explore.css' %}">
+
+    {% endblock %}
+
+</head>
+<body>
+
+
+    {% block content %}
+
+        {{ block.super }}
+
+
+            <div class="container">
+
+                {% for profile in profiles %}
+
+                    {% if profile.following %}
+
+                        <h2>
+
+                        {% if profile.profpic %}
+
+                            <img src="{{ profile.profpic.url }}" class="img-responsive" alt="profile" id="profpic"/>
+
+                            <a href="{% url 'profile' profile.user.username %}"> {{ profile.user.username }} </a>
+
+
+                        {% else %}
+
+                            <a href="{% url 'profile' profile.user.username %}"> <img src="{{ profile.profile.profpic.url }}" id="profpic"> </a>
+
+                        {% endif %}
+
+
+
+                            <a href="{% url 'follow' profile.id %}" style="float: right"> Following </a>
+
+                    </h2>
+
+
+                    {% else %}
+
+                    <h2>
+
+                        {% if profile.profpic %}
+
+                            <img src="{{ profile.profpic.url }}" class="img-responsive" alt="profile" id="profpic"/>
+
+                            <a href="{% url 'profile' profile.user.username %}"> {{ profile.user.username }} </a>
+
+
+                        {% else %}
+
+                            <a href="{% url 'profile' profile.user.username %}"> <img src="{{ profile.profile.profpic.url }}" id="profpic"> </a>
+
+                        {% endif %}
+
+
+
+                            <a href="{% url 'follow' profile.id %}" style="float: right"> Follow </a>
+
+                    </h2>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+
+    {% endblock %}
+
+
+</body>
+</html>
