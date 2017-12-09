@@ -89,4 +89,13 @@ class Comment(models.Model):
         return comments
 
 
+class Like(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+    likes = models.PositiveIntegerField(blank=True, null=True)
+
+
 
