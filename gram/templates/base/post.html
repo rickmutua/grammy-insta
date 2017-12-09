@@ -1,0 +1,171 @@
+{% extends 'base/base.html' %}
+{% load bootstrap3 %}
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    {% if title %}
+
+        {{title}}
+
+    {% else %}
+
+        <title> Grammy Insta </title>
+
+    {% endif %}
+
+
+    {% block styles %}
+
+        {% bootstrap_css %}
+
+            <link rel="stylesheet" href="{% static 'css/post.css' %}">
+
+    {% endblock %}
+
+</head>
+<body>
+
+    {% block content %}
+
+        {{ block.super }}
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-md-2"></div>
+
+                    <div class="col-md-8">
+
+                        <div class="panel panel-default">
+
+                            <div class="panel-heading">
+
+                                {% if profpic.profpic %}
+
+                                    <a href="{% url 'profile' post.user.username %}">
+                                        <img src="{{ profpic.profpic.url }}" id="profpic" alt="prof">
+
+                                        <h2> @{{ user.username }} </h2>
+
+                                    </a>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="panel-body">
+
+                                <div class="row">
+
+                                    <img src="{{ post.image.url }}" class="img-responsive" alt="post">
+
+                                </div>
+
+                                <div class="row" style="padding-left: 10px; padding-right: 10px; font-size: 30px;">
+
+                                    <p>
+                                        {% if likes %}
+
+                                            <i class="fa fa-heart" aria-hidden="true"></i>
+
+                                        {% else %}
+
+                                            <a href="{%url 'like' post.id%}">
+
+                                                <i class="fa fa-heart-o" aria-hidden="true"></i>
+
+                                            </a>
+
+                                        {% endif %}
+
+
+                                        {% if reviews %}
+
+                                            <i class="fa fa-comments-o" aria-hidden="true"></i>
+
+                                        {% else %}
+
+                                            <i class="fa fa-comments" aria-hidden="true"></i>
+
+                                        {% endif %}
+
+                                            <i style="float: right;" class="fa fa-download" aria-hidden="true"></i>
+
+                                    </p>
+
+                                    <p>
+                                        {{ likes.count }} likes {{ reviews.count }} comments
+                                    </p>
+
+                                </div>
+
+                                <div class="row" style="padding-left: 10px;">
+
+                                    {% for comment in reviews %}
+
+                                    <p style="font-family: 'Bitstream Charter'; font-weight: bold"> @{{ comment.user.username }} </p>
+
+                                    <p style="padding-left: 15px">
+                                        {{ comment.content }}
+                                    </p>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    <br>
+
+                </div>
+
+                <div class="col-md-2"></div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-md-2"></div>
+
+                    <div class="col-md-8">
+
+                        <div class="panel panel-default">
+
+                            <div class="panel-body">
+
+                                <form action="{% url 'post' post.id%}" method="post">
+
+                                    {% csrf_token %}
+
+                                        {% bootstrap_form form %}
+
+                                        <input type="submit" class="btn btn-success btn-lg" value="Post">
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-2"></div>
+
+                </div>
+
+            </div>
+
+    {% endblock %}
+
+</body>
+</html>
