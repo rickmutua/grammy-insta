@@ -164,7 +164,7 @@ def post(request, id):
 
             return render(request, 'base/post.html', {'form': form, 'post': found_post,
                                                       'profpic': profpic, 'reviews': reviews,
-                                                      })
+                                                      'likes': likes})
 
     except ObjectDoesNotExist:
 
@@ -188,7 +188,7 @@ def search_results(request):
 
 def explore(request):
 
-    profiles = Profile.objects.all().order_by('-id')
+    profiles = Profile.objects.filter(following=profile).order_by('-id')
 
     return render(request, 'base/explore.html', {'profiles': profiles})
 
